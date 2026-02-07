@@ -14,16 +14,16 @@ const app = express();
 connectDB();
 
 // 🔥 CORS MUST COME BEFORE ROUTES
-app.use(cors({
-  origin: "http://localhost:3000"
-}));
-
 // app.use(cors({
-//   origin: [
-//     "http://localhost:3000",
-//     "https://your-frontend.vercel.app" // add later
-//   ]
+//   origin: "http://localhost:3000"
 // }));
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://your-frontend.vercel.app" 
+  ]
+}));
 
 app.use(express.json());
 
