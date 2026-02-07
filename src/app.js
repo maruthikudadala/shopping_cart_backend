@@ -19,11 +19,10 @@ const allowedOrigins = [
   "https://shopping-cart-frontend-git-main-maruthis-projects-1a5f07a5.vercel.app"
 ];
 
-// ✅ CORS MUST COME BEFORE ROUTES
+// ✅ CORS (ENOUGH — handles OPTIONS automatically)
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (Postman, curl)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // Postman / curl
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -31,13 +30,9 @@ app.use(cors({
       return callback(null, false);
     }
   },
-  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
-
-// ✅ HANDLE PREFLIGHT REQUESTS
-app.options("*", cors());
 
 app.use(express.json());
 
@@ -48,7 +43,6 @@ app.use(cartRoutes);
 app.use(orderRoutes);
 
 const PORT = process.env.PORT || 3001;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
