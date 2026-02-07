@@ -13,19 +13,31 @@ const app = express();
 // CONNECT DB
 connectDB();
 
-// 🔥 CORS MUST COME BEFORE ROUTES
-// app.use(cors({
-//   origin: "http://localhost:3000"
-// }));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://shopping-cart-frontend-lime.vercel.app",
+  "https://shopping-cart-frontend-git-main-maruthis-projects-1a5f07a5.vercel.app"
+];
 
+// ✅ CORS MUST COME BEFORE ROUTES
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://shopping-cart-frontend-lime.vercel.app/"
-  ],
+  origin: function (origin, callback) {
+    // allow requests with no origin (Postman, curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(null, false);
+    }
+  },
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// ✅ HANDLE PREFLIGHT REQUESTS
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -40,4 +52,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
-
