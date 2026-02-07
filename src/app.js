@@ -21,9 +21,10 @@ connectDB();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://shopping-cart-frontend-lime.vercel.app/" 
-    
-  ]
+    "https://shopping-cart-frontend-lime.vercel.app/"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
